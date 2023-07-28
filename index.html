@@ -1,0 +1,58 @@
+<html>
+<head>
+	<title> Currency Converter </title>
+
+	<style>
+		* { font-size : 40px; }
+		h1 {border:solid; width:50%; border-radius:40px; color : white;}
+		body {background-image:url('im2.jpg');
+			background-repeat:no-repeat;
+			background-size: cover; }
+	</style>
+
+	<script>
+		function Convert()
+		{
+			//Server
+
+			event.preventDefault();
+			let aid = document.getElementById("aid");
+			let ans = document.getElementById("ans");
+			let url = "https://api.exchangerate-api.com/v4/latest/USD";
+
+			//Promise Statement
+
+			fetch (url) 											
+			.then(res => res.json()) 									
+			.then(data => {
+				let dollar = data["rates"]["INR"];
+				let amt_in_dollar = parseFloat(aid.value);
+				let amt_in_rupees = amt_in_dollar * dollar;
+				let msg = "\u20b9" + amt_in_rupees.toFixed(2);
+				ans.innerHTML = msg;
+			})	
+			.content(err => ans.innerHTML = "Issue" + err);							
+		}
+	</script>
+</head>
+
+<body>
+
+	<center>
+		<!--Client-->
+
+		<h1> Live Currency Converter </h1>
+
+		<form onsubmit="Convert()">
+			<input type= "number" step="any" placeholder="Enter amount in $$" id="aid" />
+			<br><br>
+			<input type="submit" value="Convert" />
+		</form>
+
+		<h1 id="ans" />
+
+	</center>
+
+</body>
+
+</html>
